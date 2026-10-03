@@ -35,6 +35,7 @@ public final class PerilscopeServerEvents {
         gameEventBus.addListener(PerilscopeServerEvents::onPlayerLoggedIn);
         gameEventBus.addListener(PerilscopeServerEvents::onPlayerLoggedOut);
         gameEventBus.addListener(PerilscopeServerEvents::onPlayerChangedDimension);
+        gameEventBus.addListener(PerilscopeServerEvents::onPlayerRespawn);
     }
 
     private static void onServerStarting(ServerStartingEvent event) {
@@ -65,6 +66,12 @@ public final class PerilscopeServerEvents {
     }
 
     private static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (tracker != null && event.getEntity() instanceof ServerPlayer player) {
+            tracker.forceUpdate(player);
+        }
+    }
+
+    private static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (tracker != null && event.getEntity() instanceof ServerPlayer player) {
             tracker.forceUpdate(player);
         }
