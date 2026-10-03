@@ -18,7 +18,8 @@ public final class PerilscopeNetworking {
     }
 
     static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
+        // Optional: clients without Perilscope can still join, they just never receive the payload
+        PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION).optional();
         // The handler only runs on the client. ClientDifficultyState has no client-only imports,
         // so referencing it here is safe on dedicated servers. Handlers run on the main thread by default.
         registrar.playToClient(DifficultyStatePayload.TYPE, DifficultyStatePayload.STREAM_CODEC,
@@ -26,6 +27,8 @@ public final class PerilscopeNetworking {
     }
 
     static void sendToPlayer(ServerPlayer player, DifficultyState state) {
-        PacketDistributor.sendToPlayer(player, new DifficultyStatePayload(state));
+        if (player.connection.hasChannel(DifficultyStatePayload.TYPE)) {
+            PacketDistributor.sendToPlayer(player, new DifficultyStatePayload(state));
+        }
     }
 }

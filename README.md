@@ -10,7 +10,8 @@ NeoForge mod for Minecraft 1.21.1 (Java 21) that shows two freely positionable H
 
 All values are computed on the server (every 10 ticks per player) and sent to the client with the
 `perilscope:difficulty_state` payload, only when they changed (plus on login and dimension change).
-The mod is required on server **and** client. Both integrations are optional.
+The payload channel is registered as optional: the HUD needs the mod on server **and** client, but clients
+without Perilscope can still join a server that has it (they simply don't get the HUD). Both integrations are optional.
 
 Project layout
 --------------
