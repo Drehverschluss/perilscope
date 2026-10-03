@@ -26,6 +26,18 @@ Dungeon Difficulty has no public API. Perilscope uses its internal classes
 (`net.dungeon_difficulty.logic.PatternMatching`, `Difficulty`), so an update of Dungeon Difficulty may break
 the integration. On any error the query is logged once and disabled for the rest of the server session.
 
+Dependencies
+------------
+
+* Dynamic Difficulty `1.3.4+1.21.1` from `https://maven.muon.rip/releases/` (it needs Fzzy Config and
+  Kotlin for Forge at runtime, the build pulls them in for the dev runs).
+* Dungeon Difficulty `3.9.1+1.21.1` from the Modrinth Maven (`maven.modrinth:dungeon-difficulty`). If it cannot be
+  resolved, download `dungeon_difficulty-neoforge-3.9.1+1.21.1.jar` into `libs/`; the build then uses the local
+  jar instead (path configurable via `dungeon_difficulty_local_jar` in `gradle.properties`).
+
+Both are `compileOnly` + `localRuntime`, so they are available in `runClient` / `runServer` but are never
+required by the built mod.
+
 Configuration
 -------------
 

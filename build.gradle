@@ -31,6 +31,25 @@ repositories {
     maven {
         name = 'Muon'
         url = 'https://maven.muon.rip/releases/'
+        content {
+            includeGroup 'dev.muon.dynamic_difficulty'
+        }
+    }
+    // Fzzy Config, required at runtime by Dynamic Difficulty (dev runs only)
+    maven {
+        name = 'FzzyConfig'
+        url = 'https://maven.fzzyhmstrs.me/'
+        content {
+            includeGroup 'me.fzzyhmstrs'
+        }
+    }
+    // Kotlin for Forge, required at runtime by Fzzy Config (dev runs only)
+    maven {
+        name = 'KotlinForForge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+        content {
+            includeGroup 'thedarkcolour'
+        }
     }
     // Dungeon Difficulty (only used for the maven.modrinth group)
     exclusiveContent {
@@ -139,9 +158,16 @@ dependencies {
     compileOnly "dev.muon.dynamic_difficulty:dynamic_difficulty-neoforge:${dynamic_difficulty_version}"
     localRuntime "dev.muon.dynamic_difficulty:dynamic_difficulty-neoforge:${dynamic_difficulty_version}"
 
-    // Dungeon Difficulty (no public API, internal classes are used)
-    compileOnly "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
-    localRuntime "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
+    // Dungeon Difficulty (no public API, internal classes are used).
+    // Resolved from the Modrinth Maven. If that fails, put the jar into libs/ (see dungeon_difficulty_local_jar).
+    def dungeonDifficultyLocalJar = file(dungeon_difficulty_local_jar)
+    if (dungeonDifficultyLocalJar.exists()) {
+        compileOnly files(dungeonDifficultyLocalJar)
+        localRuntime files(dungeonDifficultyLocalJar)
+    } else {
+        compileOnly "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
+        localRuntime "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
