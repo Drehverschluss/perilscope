@@ -175,7 +175,7 @@ public final class HudEditScreen extends Screen {
         DifficultyState state = ClientDifficultyState.get();
         for (HudElement element : HudElements.ALL) {
             List<Component> lines = element.getEditorLines(state);
-            element.renderLines(graphics, font, lines, !element.isVisible());
+            element.renderLines(graphics, font, lines, element.getEditorFrameColor(state), !element.isVisible());
             HudElement.Bounds bounds = bounds(element);
             boolean active = element == selected || bounds.contains(mouseX, mouseY);
             // Idle elements that already have a visible background or frame need no extra outline,

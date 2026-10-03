@@ -5,11 +5,9 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A freely positionable HUD element: anchor + offset (GUI pixels) + scale.
@@ -70,7 +68,7 @@ public abstract class HudElement {
      * Colors the text by difficulty level (if enabled), see {@link DifficultyColors}.
      */
     protected final MutableComponent colored(MutableComponent text, int level) {
-        return colorWith(text, DifficultyColors.forLevel(palette, level, colorMaxLevel));
+        return colorWith(text, DifficultyColors.textForLevel(palette, level, colorMaxLevel));
     }
 
     /**
@@ -85,6 +83,20 @@ public abstract class HudElement {
     }
 
     /**
+     * @return the frame color for a level (white if coloring is disabled)
+     */
+    protected final int frameForLevel(int level) {
+        return colorByDifficulty ? DifficultyColors.frameForLevel(palette, level, colorMaxLevel) : DEFAULT_FRAME_RGB;
+    }
+
+    /**
+     * @return the frame color for harmless places (white if coloring is disabled)
+     */
+    protected final int safeFrame() {
+        return colorByDifficulty ? DifficultyColors.SAFE : DEFAULT_FRAME_RGB;
+    }
+
+    /**
      * @return the text lines to show for the given state, empty to render nothing
      */
     protected abstract List<Component> getLines(DifficultyState state);
@@ -93,6 +105,23 @@ public abstract class HudElement {
      * @return sample lines shown in the layout editor while {@link #getLines} has nothing to show
      */
     protected abstract List<Component> getPreviewLines();
+
+    /**
+     * @return RGB frame color for the lines of {@link #getLines}
+     */
+    protected abstract int getFrameColor(DifficultyState state);
+
+    /**
+     * @return RGB frame color for the lines of {@link #getPreviewLines}
+     */
+    protected abstract int getPreviewFrameColor();
+
+    /**
+     * @return the frame color matching {@link #getEditorLines}
+     */
+    public int getEditorFrameColor(DifficultyState state) {
+        return getLines(state).isEmpty() ? getPreviewFrameColor() : getFrameColor(state);
+    }
 
     /**
      * @return the real lines if there are any, otherwise the sample lines
@@ -110,13 +139,13 @@ public abstract class HudElement {
         if (lines.isEmpty()) {
             return;
         }
-        renderLines(graphics, font, lines, false);
+        renderLines(graphics, font, lines, getFrameColor(state), false);
     }
 
     /**
      * Renders the given lines at the position of this element.
      */
-    public void renderLines(GuiGraphics graphics, Font font, List<Component> lines, boolean dimmed) {
+    public void renderLines(GuiGraphics graphics, Font font, List<Component> lines, int frameRgb, boolean dimmed) {
         Bounds bounds = getBounds(font, lines, graphics.guiWidth(), graphics.guiHeight());
         int width = contentWidth(font, lines);
         int height = contentHeight(font, lines);
@@ -127,27 +156,13 @@ public abstract class HudElement {
         if (showBackground) {
             graphics.fill(0, 0, width, height, dimmed ? DIMMED_BACKGROUND_COLOR : BACKGROUND_COLOR);
         }
-        frameStyle.draw(graphics, width, height, frameRgb(lines), dimmed ? DIMMED_FRAME_ALPHA : FRAME_ALPHA);
+        frameStyle.draw(graphics, width, height, frameRgb, dimmed ? DIMMED_FRAME_ALPHA : FRAME_ALPHA);
         int lineHeight = font.lineHeight + LINE_SPACING;
         for (int i = 0; i < lines.size(); i++) {
             graphics.drawString(font, lines.get(i), padding(), padding() + i * lineHeight,
                     dimmed ? DIMMED_TEXT_COLOR : TEXT_COLOR, !dimmed);
         }
         graphics.pose().popPose();
-    }
-
-    /**
-     * The frame takes the color of the text (difficulty color), white if the text is not colored.
-     */
-    private static int frameRgb(List<Component> lines) {
-        for (Component line : lines) {
-            Optional<Integer> color = line.visit((style, text) ->
-                    style.getColor() != null ? Optional.of(style.getColor().getValue()) : Optional.empty(), Style.EMPTY);
-            if (color.isPresent()) {
-                return color.get() & 0xFFFFFF;
-            }
-        }
-        return DEFAULT_FRAME_RGB;
     }
 
     /**

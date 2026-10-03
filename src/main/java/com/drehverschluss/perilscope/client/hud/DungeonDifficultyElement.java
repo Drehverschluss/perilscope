@@ -21,6 +21,8 @@ public final class DungeonDifficultyElement extends HudElement {
     /** Highest level of Dungeon Difficulty's default configuration. */
     public static final int DEFAULT_COLOR_MAX_LEVEL = 6;
 
+    private static final int PREVIEW_LEVEL = 5;
+
     private Set<String> safeTypes = Set.of();
 
     public DungeonDifficultyElement() {
@@ -40,7 +42,17 @@ public final class DungeonDifficultyElement extends HudElement {
 
     @Override
     protected List<Component> getPreviewLines() {
-        return List.of(colored(Component.translatable("hud.perilscope.dungeon.unknown_type", 5), 5));
+        return List.of(colored(Component.translatable("hud.perilscope.dungeon.unknown_type", PREVIEW_LEVEL), PREVIEW_LEVEL));
+    }
+
+    @Override
+    protected int getFrameColor(DifficultyState state) {
+        return isSafe(state.dungeonTypeKey()) ? safeFrame() : frameForLevel(state.dungeonLevel());
+    }
+
+    @Override
+    protected int getPreviewFrameColor() {
+        return frameForLevel(PREVIEW_LEVEL);
     }
 
     /**

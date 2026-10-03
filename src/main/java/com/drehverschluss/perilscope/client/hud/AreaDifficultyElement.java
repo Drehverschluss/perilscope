@@ -17,6 +17,8 @@ public final class AreaDifficultyElement extends HudElement {
     /** Dynamic Difficulty's default level cap. */
     public static final int DEFAULT_COLOR_MAX_LEVEL = 80;
 
+    private static final int PREVIEW_LEVEL = 12;
+
     private boolean showBonuses = true;
 
     public AreaDifficultyElement() {
@@ -33,7 +35,17 @@ public final class AreaDifficultyElement extends HudElement {
 
     @Override
     protected List<Component> getPreviewLines() {
-        return List.of(buildLine(12, 3, -1));
+        return List.of(buildLine(PREVIEW_LEVEL, 3, -1));
+    }
+
+    @Override
+    protected int getFrameColor(DifficultyState state) {
+        return frameForLevel(state.areaLevel());
+    }
+
+    @Override
+    protected int getPreviewFrameColor() {
+        return frameForLevel(PREVIEW_LEVEL);
     }
 
     private MutableComponent buildLine(int areaLevel, int structureBonus, int biomeBonus) {
