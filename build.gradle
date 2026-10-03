@@ -27,7 +27,23 @@ sourceSets.main.resources {
 }
 
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    // Dynamic Difficulty
+    maven {
+        name = 'Muon'
+        url = 'https://maven.muon.rip/releases/'
+    }
+    // Dungeon Difficulty (only used for the maven.modrinth group)
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
 }
 
 base {
@@ -116,27 +132,16 @@ configurations {
 }
 
 dependencies {
-    // Example optional mod dependency with JEI
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
-    // compileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
-    // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
-    // localRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    // Both integrations are optional: compile against them, but never publish a dependency on them.
+    // localRuntime puts them into the dev runs (runClient / runServer) for testing.
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
+    // Dynamic Difficulty (public API: dev.muon.dynamic_difficulty.api.LevelingAPI)
+    compileOnly "dev.muon.dynamic_difficulty:dynamic_difficulty-neoforge:${dynamic_difficulty_version}"
+    localRuntime "dev.muon.dynamic_difficulty:dynamic_difficulty-neoforge:${dynamic_difficulty_version}"
 
-    // Example mod dependency using a file as dependency
-    // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-
-    // Example project dependency using a sister or child project:
-    // implementation project(":myproject")
-
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    // Dungeon Difficulty (no public API, internal classes are used)
+    compileOnly "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
+    localRuntime "maven.modrinth:dungeon-difficulty:${dungeon_difficulty_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -151,6 +156,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
+            dynamic_difficulty_version_range: dynamic_difficulty_version_range,
+            dungeon_difficulty_version_range: dungeon_difficulty_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
