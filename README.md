@@ -3,7 +3,7 @@ Perilscope
 
 NeoForge mod for Minecraft 1.21.1 (Java 21) that shows two freely positionable HUD elements:
 
-1. **Area Difficulty** – area level of [Dynamic Difficulty](https://maven.muon.rip/releases/) at the player
+1. **Area Difficulty** – area level of [Dynamic Difficulty](https://github.com/muon-rw/Dynamic-Difficulty) at the player
    position, optionally with structure and biome bonus.
 2. **Dungeon Difficulty** – type and level of the [Dungeon Difficulty](https://modrinth.com/mod/dungeon-difficulty)
    zone. Only visible while the player stands inside a zone.
@@ -78,13 +78,22 @@ Building and testing
 
 Test checklist:
 
-* `runClient`, create a world: "Area Level N" is shown top left. Walk around / enter a structure to see the
-  bonuses change. Enter a Dungeon Difficulty zone (e.g. a structure configured in Dungeon Difficulty's config)
-  and the zone line appears directly below; leave it and the line disappears.
+* `runClient`, create a world: "Area Level N" is shown top left (colored by level). Walk around / enter a structure
+  to see the bonuses change. Enter a Dungeon Difficulty zone and its type and level appear below; leave it and the
+  element disappears. Settlements and ruins are shown in green, the other zones from yellow to red.
 * Press F1 or F3: the HUD elements are hidden.
-* Change anchor / offsets / scale in the config screen: the elements move immediately and stay on screen at
-  every window size and GUI scale.
+* Open the layout editor (*Mods → Perilscope → Config → Layout & Style*): drag, scale, hide and nudge both elements,
+  cycle the frame styles with the buttons or `F`, toggle the background with `B`. Close with Esc and check that the
+  layout is saved in `config/perilscope-client.toml` and kept after a restart.
+* Resize the window and change the GUI scale: the elements stay on screen at the same screen edge.
+* *Reset* in the editor restores the default positions; with `PANEL` the two default positions overlap, drag them apart.
 * `runServer`: the server starts without client class errors. Connect with `runClient` (multiplayer,
-  `localhost`) and check that the values are shown.
+  `localhost`) and check that the values are shown. A client without Perilscope can join the same server without
+  errors (no HUD).
 * Remove a dependency from `localRuntime` in `build.gradle`: the game still starts, the corresponding element
   stays hidden.
+License
+-------
+
+Perilscope is released under the [MIT License](LICENSE). `TEMPLATE_LICENSE.txt` covers the files taken from the
+[NeoForged MDK](https://github.com/NeoForged/MDK) template.
