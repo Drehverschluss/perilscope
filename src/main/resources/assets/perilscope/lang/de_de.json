@@ -1,0 +1,19 @@
+{
+  "hud.perilscope.area.level": "Gebietsstufe %s",
+  "hud.perilscope.area.structure_bonus": "[Struktur %s]",
+  "hud.perilscope.area.biome_bonus": "[Biom %s]",
+  "hud.perilscope.dungeon.zone": "Zone: %s",
+  "hud.perilscope.dungeon.unknown_type": "Stufe %s",
+
+  "perilscope.configuration.title": "Perilscope-Konfiguration",
+  "perilscope.configuration.section.perilscope.client.toml": "HUD-Layout",
+  "perilscope.configuration.section.perilscope.client.toml.title": "Perilscope HUD-Layout",
+  "perilscope.configuration.area_difficulty": "Gebietsschwierigkeit",
+  "perilscope.configuration.dungeon_difficulty": "Dungeon-Schwierigkeit",
+  "perilscope.configuration.anchor": "Anker",
+  "perilscope.configuration.offsetX": "Versatz X",
+  "perilscope.configuration.offsetY": "Versatz Y",
+  "perilscope.configuration.scale": "Skalierung",
+  "perilscope.configuration.visible": "Sichtbar",
+  "perilscope.configuration.showBonuses": "Struktur-/Biom-Bonus anzeigen"
+}

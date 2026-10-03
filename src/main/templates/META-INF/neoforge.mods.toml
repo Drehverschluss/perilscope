@@ -42,11 +42,11 @@ displayName="${mod_name}" #mandatory
 #credits="" #optional
 
 # The authors of the mod, displayed in the mod UI (optional)
-#authors=""
+authors="${mod_authors}"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Example mod description.
+${mod_description}
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
@@ -83,6 +83,22 @@ Example mod description.
     type="required"
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# Dynamic Difficulty: provides the area level shown by the "Area Difficulty" HUD element
+[[dependencies.${mod_id}]]
+    modId="dynamic_difficulty"
+    type="optional"
+    versionRange="${dynamic_difficulty_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# Dungeon Difficulty: provides the difficulty zone shown by the "Dungeon Difficulty" HUD element
+[[dependencies.${mod_id}]]
+    modId="dungeon_difficulty"
+    type="optional"
+    versionRange="${dungeon_difficulty_version_range}"
     ordering="NONE"
     side="BOTH"
 
