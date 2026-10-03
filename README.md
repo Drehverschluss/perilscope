@@ -20,8 +20,8 @@ Project layout
 |---|---|
 | `core` | Loader independent logic: `DifficultyState`, payload, `DifficultyTracker`, source interfaces |
 | `compat` | Calls into Dynamic Difficulty / Dungeon Difficulty (only instantiated if the mod is loaded) |
-| `client`, `client.hud` | Client state, HUD elements, anchor / position calculation, rendering |
-| `neoforge`, `neoforge.client` | NeoForge entry points, events, payload registration, `ModConfigSpec` |
+| `client`, `client.hud`, `client.screen` | Client state, HUD elements, anchor / position calculation, rendering, layout editor screen |
+| `neoforge`, `neoforge.client` | NeoForge entry points, events, payload registration, `ModConfigSpec`, config menu, key binding |
 
 Dungeon Difficulty has no public API. Perilscope uses its internal classes
 (`net.dungeon_difficulty.logic.PatternMatching`, `Difficulty`), so an update of Dungeon Difficulty may break
@@ -43,9 +43,23 @@ Configuration
 -------------
 
 Client config `config/perilscope-client.toml` (also editable in-game via *Mods → Perilscope → Config*),
-per element: `anchor` (`TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER_RIGHT`, `BOTTOM_LEFT`,
+per element: `anchor` (`TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`,
 `BOTTOM_CENTER`, `BOTTOM_RIGHT`), `offsetX`, `offsetY` (GUI pixels, added to the anchor point), `scale`, `visible`.
 The area element additionally has `showBonuses`.
+
+Layout editor
+-------------
+
+Open it via *Mods → Perilscope → Config → Edit HUD Layout* or the key binding *Edit HUD Layout* (unbound by default,
+*Options → Controls → Perilscope*).
+
+* Drag an element to move it. It snaps to the screen edges and center, hold Shift to disable snapping.
+* Mouse wheel over an element: scale. Right click: show / hide (hidden elements are dimmed in the editor).
+* Arrow keys nudge the selected element by 1 px (Shift: 10 px).
+* The editor shows sample text for elements that currently have nothing to show.
+* On release the nearest of the nine screen anchors is chosen and the offset recalculated, so an element stays at
+  the same screen edge for every window size and GUI scale. Esc / *Done* saves into `perilscope-client.toml`,
+  *Reset* restores the defaults.
 
 Building and testing
 --------------------

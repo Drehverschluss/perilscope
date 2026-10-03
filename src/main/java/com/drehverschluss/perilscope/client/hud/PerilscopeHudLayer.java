@@ -1,6 +1,7 @@
 package com.drehverschluss.perilscope.client.hud;
 
 import com.drehverschluss.perilscope.client.ClientDifficultyState;
+import com.drehverschluss.perilscope.client.screen.HudEditScreen;
 import com.drehverschluss.perilscope.core.DifficultyState;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -14,7 +15,8 @@ public final class PerilscopeHudLayer implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player == null || minecraft.options.hideGui || minecraft.getDebugOverlay().showDebugScreen()) {
+        if (minecraft.player == null || minecraft.options.hideGui || minecraft.getDebugOverlay().showDebugScreen()
+                || minecraft.screen instanceof HudEditScreen) {
             return;
         }
         DifficultyState state = ClientDifficultyState.get();

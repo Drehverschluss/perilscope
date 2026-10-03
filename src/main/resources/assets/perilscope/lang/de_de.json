@@ -2,8 +2,17 @@
   "hud.perilscope.area.level": "Gebietsstufe %s",
   "hud.perilscope.area.structure_bonus": "[Struktur %s]",
   "hud.perilscope.area.biome_bonus": "[Biom %s]",
-  "hud.perilscope.dungeon.zone": "Zone: %s",
   "hud.perilscope.dungeon.unknown_type": "Stufe %s",
+
+  "key.categories.perilscope": "Perilscope",
+  "key.perilscope.edit_hud": "HUD-Layout bearbeiten",
+
+  "perilscope.editor.title": "Perilscope HUD-Layout",
+  "perilscope.editor.reset": "Zurücksetzen",
+  "perilscope.editor.hint.mouse": "Ziehen: verschieben | Mausrad: skalieren | Rechtsklick: ein-/ausblenden",
+  "perilscope.editor.hint.keys": "Pfeiltasten: verschieben (Umschalt: 10 px) | Umschalt beim Ziehen: nicht einrasten | Esc: speichern und schließen",
+  "perilscope.menu.edit_layout": "HUD-Layout bearbeiten",
+  "perilscope.menu.edit_values": "Werte bearbeiten",
 
   "perilscope.configuration.title": "Perilscope-Konfiguration",
   "perilscope.configuration.section.perilscope.client.toml": "HUD-Layout",
@@ -15,5 +24,8 @@
   "perilscope.configuration.offsetY": "Versatz Y",
   "perilscope.configuration.scale": "Skalierung",
   "perilscope.configuration.visible": "Sichtbar",
+  "perilscope.configuration.colorByDifficulty": "Nach Schwierigkeit einfärben",
+  "perilscope.configuration.colorMaxLevel": "Schwerste Farbe ab Stufe",
+  "perilscope.configuration.safeTypes": "Sichere Zonentypen (grün)",
   "perilscope.configuration.showBonuses": "Struktur-/Biom-Bonus anzeigen"
 }

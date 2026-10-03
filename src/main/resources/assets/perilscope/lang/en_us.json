@@ -2,8 +2,17 @@
   "hud.perilscope.area.level": "Area Level %s",
   "hud.perilscope.area.structure_bonus": "[Structure %s]",
   "hud.perilscope.area.biome_bonus": "[Biome %s]",
-  "hud.perilscope.dungeon.zone": "Zone: %s",
   "hud.perilscope.dungeon.unknown_type": "Level %s",
+
+  "key.categories.perilscope": "Perilscope",
+  "key.perilscope.edit_hud": "Edit HUD Layout",
+
+  "perilscope.editor.title": "Perilscope HUD Layout",
+  "perilscope.editor.reset": "Reset",
+  "perilscope.editor.hint.mouse": "Drag: move | Mouse wheel: scale | Right click: show / hide",
+  "perilscope.editor.hint.keys": "Arrow keys: nudge (Shift: 10 px) | Hold Shift while dragging: no snapping | Esc: save and close",
+  "perilscope.menu.edit_layout": "Edit HUD Layout",
+  "perilscope.menu.edit_values": "Edit Values",
 
   "perilscope.configuration.title": "Perilscope Configuration",
   "perilscope.configuration.section.perilscope.client.toml": "HUD Layout",
@@ -15,5 +24,8 @@
   "perilscope.configuration.offsetY": "Offset Y",
   "perilscope.configuration.scale": "Scale",
   "perilscope.configuration.visible": "Visible",
+  "perilscope.configuration.colorByDifficulty": "Color by Difficulty",
+  "perilscope.configuration.colorMaxLevel": "Hardest Color at Level",
+  "perilscope.configuration.safeTypes": "Safe Zone Types (green)",
   "perilscope.configuration.showBonuses": "Show Structure/Biome Bonus"
 }
