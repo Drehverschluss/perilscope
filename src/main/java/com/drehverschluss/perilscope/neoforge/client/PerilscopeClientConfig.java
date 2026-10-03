@@ -2,6 +2,7 @@ package com.drehverschluss.perilscope.neoforge.client;
 
 import com.drehverschluss.perilscope.client.hud.AreaDifficultyElement;
 import com.drehverschluss.perilscope.client.hud.DungeonDifficultyElement;
+import com.drehverschluss.perilscope.client.hud.FrameStyle;
 import com.drehverschluss.perilscope.client.hud.HudAnchor;
 import com.drehverschluss.perilscope.client.hud.HudElement;
 import com.drehverschluss.perilscope.client.hud.HudElements;
@@ -67,6 +68,7 @@ public final class PerilscopeClientConfig {
      */
     public static void save() {
         AREA_DIFFICULTY.readFrom(HudElements.AREA_DIFFICULTY);
+        AREA_SHOW_BONUSES.set(HudElements.AREA_DIFFICULTY.isShowBonuses());
         DUNGEON_DIFFICULTY.readFrom(HudElements.DUNGEON_DIFFICULTY);
         SPEC.save();
     }
@@ -80,6 +82,8 @@ public final class PerilscopeClientConfig {
         public final ModConfigSpec.IntValue offsetY;
         public final ModConfigSpec.DoubleValue scale;
         public final ModConfigSpec.BooleanValue visible;
+        public final ModConfigSpec.BooleanValue showBackground;
+        public final ModConfigSpec.EnumValue<FrameStyle> frameStyle;
         public final ModConfigSpec.BooleanValue colorByDifficulty;
         public final ModConfigSpec.IntValue colorMaxLevel;
 
@@ -100,6 +104,14 @@ public final class PerilscopeClientConfig {
             visible = builder
                     .comment("Whether the element is shown")
                     .define("visible", true);
+            showBackground = builder
+                    .comment("Draw the semi-transparent background behind the text")
+                    .define("showBackground", true);
+            frameStyle = builder
+                    .comment("Frame around the text, tinted with the difficulty color (white if coloring is disabled)",
+                            "NONE, SIMPLE (flat outline), TOOLTIP (vanilla tooltip look), BEVEL (button / panel look),",
+                            "ORNATE (advancement frame look), PANEL (pixel art panel with an inset text field)")
+                    .defineEnum("frameStyle", FrameStyle.NONE);
             colorByDifficulty = builder
                     .comment("Color the text by difficulty level (green = easy, red = hard)")
                     .define("colorByDifficulty", true);
@@ -114,6 +126,9 @@ public final class PerilscopeClientConfig {
             offsetY.set(element.getOffsetY());
             scale.set(Math.round(element.getScale() * 100.0) / 100.0);
             visible.set(element.isVisible());
+            showBackground.set(element.isShowBackground());
+            frameStyle.set(element.getFrameStyle());
+            colorByDifficulty.set(element.isColorByDifficulty());
         }
 
         void applyTo(HudElement element) {
@@ -122,6 +137,8 @@ public final class PerilscopeClientConfig {
             element.setOffsetY(offsetY.get());
             element.setScale(scale.get().floatValue());
             element.setVisible(visible.get());
+            element.setShowBackground(showBackground.get());
+            element.setFrameStyle(frameStyle.get());
             element.setColorByDifficulty(colorByDifficulty.get());
             element.setColorMaxLevel(colorMaxLevel.get());
         }

@@ -41,3 +41,6 @@ repo/
 
 ### Local third-party jars (must not be redistributed) ###
 libs/
+
+### Reference screenshots (may show third-party content) ###
+screenshots/

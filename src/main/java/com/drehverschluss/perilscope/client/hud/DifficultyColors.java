@@ -13,10 +13,10 @@ public final class DifficultyColors {
     }
 
     public enum Palette {
-        /** Area level: green, yellow, orange, red, magenta. Low levels are harmless. */
-        AREA(0x55FF55, 0xFFFF55, 0xFFAA00, 0xFF5555, 0xE04BFF),
-        /** Dungeon zones: already the lowest level is dangerous, so no green: yellow, orange, red, magenta. */
-        DUNGEON(0xFFFF55, 0xFFAA00, 0xFF5555, 0xE04BFF);
+        /** Area level: green, yellow, orange, red, dark red. Low levels are harmless. */
+        AREA(0x55FF55, 0xFFFF55, 0xFFAA00, 0xFF5555, 0xAA0000),
+        /** Dungeon zones: already the lowest level is dangerous, so no green: yellow, orange, red, dark red. */
+        DUNGEON(0xFFFF55, 0xFFAA00, 0xFF5555, 0xAA0000);
 
         private final int[] stops;
 

@@ -5,9 +5,11 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.Mth;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A freely positionable HUD element: anchor + offset (GUI pixels) + scale.
@@ -23,6 +25,9 @@ public abstract class HudElement {
     private static final int TEXT_COLOR = 0xFFFFFFFF;
     private static final int DIMMED_BACKGROUND_COLOR = 0x40000000;
     private static final int DIMMED_TEXT_COLOR = 0x80FFFFFF;
+    private static final int FRAME_ALPHA = 0xFF;
+    private static final int DIMMED_FRAME_ALPHA = 0x80;
+    private static final int DEFAULT_FRAME_RGB = 0xFFFFFF;
 
     /**
      * Position and size of an element on screen, in GUI pixels (scale already applied).
@@ -42,6 +47,8 @@ public abstract class HudElement {
     private int offsetY;
     private float scale = 1.0F;
     private boolean visible = true;
+    private boolean showBackground = true;
+    private FrameStyle frameStyle = FrameStyle.NONE;
     private boolean colorByDifficulty = true;
     private final DifficultyColors.Palette palette;
     private int colorMaxLevel;
@@ -117,13 +124,30 @@ public abstract class HudElement {
         graphics.pose().pushPose();
         graphics.pose().translate(bounds.x(), bounds.y(), 0);
         graphics.pose().scale(scale, scale, 1.0F);
-        graphics.fill(0, 0, width, height, dimmed ? DIMMED_BACKGROUND_COLOR : BACKGROUND_COLOR);
+        if (showBackground) {
+            graphics.fill(0, 0, width, height, dimmed ? DIMMED_BACKGROUND_COLOR : BACKGROUND_COLOR);
+        }
+        frameStyle.draw(graphics, width, height, frameRgb(lines), dimmed ? DIMMED_FRAME_ALPHA : FRAME_ALPHA);
         int lineHeight = font.lineHeight + LINE_SPACING;
         for (int i = 0; i < lines.size(); i++) {
-            graphics.drawString(font, lines.get(i), PADDING, PADDING + i * lineHeight,
+            graphics.drawString(font, lines.get(i), padding(), padding() + i * lineHeight,
                     dimmed ? DIMMED_TEXT_COLOR : TEXT_COLOR, !dimmed);
         }
         graphics.pose().popPose();
+    }
+
+    /**
+     * The frame takes the color of the text (difficulty color), white if the text is not colored.
+     */
+    private static int frameRgb(List<Component> lines) {
+        for (Component line : lines) {
+            Optional<Integer> color = line.visit((style, text) ->
+                    style.getColor() != null ? Optional.of(style.getColor().getValue()) : Optional.empty(), Style.EMPTY);
+            if (color.isPresent()) {
+                return color.get() & 0xFFFFFF;
+            }
+        }
+        return DEFAULT_FRAME_RGB;
     }
 
     /**
@@ -159,16 +183,20 @@ public abstract class HudElement {
         visible = true;
     }
 
-    private static int contentWidth(Font font, List<Component> lines) {
+    private int padding() {
+        return PADDING + frameStyle.extraPadding();
+    }
+
+    private int contentWidth(Font font, List<Component> lines) {
         int textWidth = 0;
         for (Component line : lines) {
             textWidth = Math.max(textWidth, font.width(line));
         }
-        return textWidth + PADDING * 2;
+        return textWidth + padding() * 2;
     }
 
-    private static int contentHeight(Font font, List<Component> lines) {
-        return lines.size() * (font.lineHeight + LINE_SPACING) - LINE_SPACING + PADDING * 2;
+    private int contentHeight(Font font, List<Component> lines) {
+        return lines.size() * (font.lineHeight + LINE_SPACING) - LINE_SPACING + padding() * 2;
     }
     public String getId() {
         return id;
@@ -208,6 +236,22 @@ public abstract class HudElement {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public boolean isShowBackground() {
+        return showBackground;
+    }
+
+    public void setShowBackground(boolean showBackground) {
+        this.showBackground = showBackground;
+    }
+
+    public FrameStyle getFrameStyle() {
+        return frameStyle;
+    }
+
+    public void setFrameStyle(FrameStyle frameStyle) {
+        this.frameStyle = frameStyle;
     }
 
     public boolean isColorByDifficulty() {

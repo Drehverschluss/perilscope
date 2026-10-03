@@ -44,17 +44,23 @@ Configuration
 
 Client config `config/perilscope-client.toml` (also editable in-game via *Mods → Perilscope → Config*),
 per element: `anchor` (`TOP_LEFT`, `TOP_CENTER`, `TOP_RIGHT`, `CENTER_LEFT`, `CENTER`, `CENTER_RIGHT`, `BOTTOM_LEFT`,
-`BOTTOM_CENTER`, `BOTTOM_RIGHT`), `offsetX`, `offsetY` (GUI pixels, added to the anchor point), `scale`, `visible`.
-The area element additionally has `showBonuses`.
+`BOTTOM_CENTER`, `BOTTOM_RIGHT`), `offsetX`, `offsetY` (GUI pixels, added to the anchor point), `scale`, `visible`,
+`showBackground`, `frameStyle` (`NONE`, `SIMPLE`, `TOOLTIP`, `BEVEL`, `ORNATE`, `PANEL`, tinted with the difficulty color),
+`colorByDifficulty` and `colorMaxLevel` (level of the hardest color).
+The area element additionally has `showBonuses`, the dungeon element `safeTypes` (zone types shown in green without a
+level, default `settlement` and `ruins`).
 
 Layout editor
 -------------
 
-Open it via *Mods → Perilscope → Config → Edit HUD Layout* or the key binding *Edit HUD Layout* (unbound by default,
+Open it via *Mods → Perilscope → Config → Layout & Style* or the key binding *Edit HUD Layout* (unbound by default,
 *Options → Controls → Perilscope*).
 
 * Drag an element to move it. It snaps to the screen edges and center, hold Shift to disable snapping.
 * Mouse wheel over an element: scale. Right click: show / hide (hidden elements are dimmed in the editor).
+* Select an element to change its frame style, background, colors, visibility (and the bonuses of the area element)
+  with the buttons at the bottom. The real HUD element updates immediately. `F` cycles the frame style, `B` toggles
+  the background.
 * Arrow keys nudge the selected element by 1 px (Shift: 10 px).
 * The editor shows sample text for elements that currently have nothing to show.
 * On release the nearest of the nine screen anchors is chosen and the offset recalculated, so an element stays at
